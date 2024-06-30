@@ -210,7 +210,7 @@ vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
 
 -- search replace
-vim.keymap.set('n', '<leader>s', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set('n', '<leader>rp', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = 'Personal: [R]e[p]lace' })
 
 -------------------------------------------------------------------------------
 
@@ -629,7 +629,7 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
         -- gopls = {},
         pyright = {},
         -- rust_analyzer = {},
@@ -730,6 +730,26 @@ require('lazy').setup({
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
       },
     },
+    config = function()
+      vim.api.nvim_create_user_command('FormatDisable', function(args)
+        if args.bang then
+          -- FormatDisable! will disable formatting just for this buffer
+          vim.b.disable_autoformat = true
+        else
+          vim.g.disable_autoformat = true
+        end
+      end, {
+        desc = 'Disable autoformat-on-save',
+        bang = true,
+      })
+
+      vim.api.nvim_create_user_command('FormatEnable', function()
+        vim.b.disable_autoformat = false
+        vim.g.disable_autoformat = false
+      end, {
+        desc = 'Re-enable autoformat-on-save',
+      })
+    end,
   },
 
   { -- Autocompletion
