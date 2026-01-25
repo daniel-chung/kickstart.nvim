@@ -2,6 +2,8 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
+
+vim.opt.colorcolumn = '88'
 return {
   {
     'kevinhwang91/nvim-ufo',
@@ -116,5 +118,18 @@ return {
         enabled = false,
       },
     },
+  },
+  {
+    'voldikss/vim-floaterm',
+    init = function()
+      vim.keymap.set({ 'n', 't' }, '<C-t>', '<C-\\><C-n>:FloatermToggle<CR>', { noremap = true, silent = true })
+      vim.keymap.set({ 'n', 't' }, '<C-n>', '<C-\\><C-n>:FloatermNew<CR>', { noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>fn', '<C-\\><C-n>:FloatermNew<CR>', { noremap = true, silent = true })
+    end,
+  },
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^6', -- Recommended
+    lazy = false, -- This plugin is already lazy
   },
 }
